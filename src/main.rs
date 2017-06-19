@@ -1,6 +1,8 @@
+extern crate rand;
 pub mod grid;
 pub mod shape;
-use grid::*;
+use grid::GridBuilder;
+use grid::Grid;
 
 struct Game {
     grid:       Grid,
@@ -16,8 +18,8 @@ impl Game {
         Game {
             grid:   GridBuilder::new().finalize(),
             block:  GridBuilder::new()
-                        .with_color(Color::Red)
-                        .with_shape(&shape::L_SHAPE)
+                        .with_color(grid::next_color())
+                        .with_shape(shape::next_shape())
                         .finalize(),
             score:  0,
             gameover: false,
