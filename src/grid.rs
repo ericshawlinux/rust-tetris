@@ -36,9 +36,10 @@ pub fn next_color() -> Color {
 
 
 pub struct GridBuilder {
-    shape: &'static [Point],
-    color: Color,
-    grid: Grid,
+    shape:  &'static [Point],
+    offset: Point,
+    color:  Color,
+    grid:   Grid,
 }
 
 impl GridBuilder {
@@ -47,6 +48,7 @@ impl GridBuilder {
     
         GridBuilder {
             shape:  &shape::NO_SHAPE,
+            offset: Point { x: 3, y: 0 }, // centered at top
             color:  Color::Empty,
             grid:   [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
         }
@@ -63,16 +65,41 @@ impl GridBuilder {
         self.shape = shape;
         self
     }
+
+    pub fn with_offset(mut self, offset: Point) -> GridBuilder {
+
+        self.offset = offset;
+        self
+    }
+
+    pub fn get_offset(&self) -> Point {
+
+        self.offset
+    }
     
     pub fn finalize (mut self) -> Grid {
         
         let shape = self.shape;
         
+        // check boundaries are not crossed (4 points)
+        for point_idx in 0..shape.len() {
+
+            let point = &shape[point_idx];
+
+            if point.x + self.offset.x >= GRID_WIDTH {
+                self.offset.x -= 1;
+            }
+            if point.y + self.offset.y >= GRID_HEIGHT {
+                self.offset.y -= 1;
+            }
+        }
+        
+        // draw the grid with shape (same 4 points again)
         for point_idx in 0..shape.len() {
 
             let point = &shape[point_idx];
             
-            self.grid[point.x][point.y] = self.color;
+            self.grid[point.x + self.offset.x][point.y + self.offset.y] = self.color;
         }
         
         self.grid
