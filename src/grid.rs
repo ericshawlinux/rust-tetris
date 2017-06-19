@@ -1,5 +1,6 @@
 use shape;
 use shape::Point;
+use shape::Shape;
 use rand;
 use rand::Rng;
 
@@ -36,10 +37,11 @@ pub fn next_color() -> Color {
 
 
 pub struct GridBuilder {
-    shape:  &'static [Point],
-    offset: Point,
-    color:  Color,
-    grid:   Grid,
+    shape:      Option<&'static Shape>,
+    offset:     Point,
+    rotation:   usize,
+    color:      Color,
+    grid:       Grid,
 }
 
 impl GridBuilder {
@@ -47,10 +49,11 @@ impl GridBuilder {
     pub fn new() -> GridBuilder {
     
         GridBuilder {
-            shape:  &shape::NO_SHAPE,
-            offset: Point { x: 3, y: 0 }, // centered at top
-            color:  Color::Empty,
-            grid:   [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
+            shape:      None,
+            offset:     Point { x: 3, y: 0 }, // centered at top
+            rotation:   shape::ROTATE_A,
+            color:      Color::Empty,
+            grid:       [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
         }
     }
     
@@ -60,9 +63,9 @@ impl GridBuilder {
         self
     }
     
-    pub fn with_shape(mut self, shape: &'static [Point]) -> GridBuilder {
+    pub fn with_shape(mut self, shape: &'static Shape) -> GridBuilder {
     
-        self.shape = shape;
+        self.shape = Some(shape);
         self
     }
 
@@ -73,33 +76,48 @@ impl GridBuilder {
     }
 
     pub fn get_offset(&self) -> Point {
-
+        
         self.offset
+    }
+
+    pub fn with_rotation(mut self, rotation: usize) -> GridBuilder {
+
+        self.rotation = rotation;
+        self
+    }
+
+    pub fn get_rotation(mut self) -> usize {
+        
+        self.rotation
     }
     
     pub fn finalize (mut self) -> Grid {
         
-        let shape = self.shape;
-        
-        // check boundaries are not crossed (4 points)
-        for point_idx in 0..shape.len() {
-
-            let point = &shape[point_idx];
-
-            if point.x + self.offset.x >= GRID_WIDTH {
-                self.offset.x -= 1;
-            }
-            if point.y + self.offset.y >= GRID_HEIGHT {
-                self.offset.y -= 1;
-            }
-        }
-        
-        // draw the grid with shape (same 4 points again)
-        for point_idx in 0..shape.len() {
-
-            let point = &shape[point_idx];
+        if let Some(shape) = self.shape {
             
-            self.grid[point.x + self.offset.x][point.y + self.offset.y] = self.color;
+            let shape = shape[self.rotation];
+
+            // check boundaries are not crossed (4 points)
+            for point_idx in 0..shape.len() {
+
+                let point = &shape[point_idx];
+
+                // todo: make this actually work. gets messed up if get_offset previously gave a bad offset
+                if point.x + self.offset.x >= GRID_WIDTH {
+                    self.offset.x -= 1;
+                }
+                if point.y + self.offset.y >= GRID_HEIGHT {
+                    self.offset.y -= 1;
+                }
+            }
+            
+            // draw the grid with shape (same 4 points again)
+            for point_idx in 0..shape.len() {
+
+                let point = &shape[point_idx];
+                
+                self.grid[point.x + self.offset.x][point.y + self.offset.y] = self.color;
+            }
         }
         
         self.grid

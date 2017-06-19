@@ -8,6 +8,7 @@ struct Game {
     grid:       Grid,
     block:      Grid,
     offset:     shape::Point,
+    rotation:   usize,
     score:      i32,
     gameover:   bool,
 }
@@ -23,6 +24,7 @@ impl Game {
         Game {
             grid:       GridBuilder::new().finalize(),
             offset:     block.get_offset(),
+            rotation:   shape::ROTATE_A,
             block:      block.finalize(),
             score:      0,
             gameover:   false,
