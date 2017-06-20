@@ -8,11 +8,8 @@ use grid;
 use shape;
 
 pub struct Game {
-    grid:       Grid,
-    shape:      &'static shape::Shape,
-    block:      Grid,
-    offset:     shape::Point,
-    rotation:   usize,
+    grid:       Grid, // past blocks that have been set
+    block:      Grid, // current block
     score:      i32,
     gameover:   bool,
 }
@@ -20,17 +17,12 @@ pub struct Game {
 impl Game {
 
     pub fn new() -> Game {
-        
-        let block = GridBuilder::new()
-            .with_color(grid::next_color())
-            .with_shape(shape::next_shape());
-
         Game {
             grid:       GridBuilder::new().finalize(),
-            shape:      block.get_shape(),
-            offset:     block.get_offset(),
-            rotation:   block.get_rotation(),
-            block:      block.finalize(),
+            block:      GridBuilder::new()
+                            .with_color(grid::next_color())
+                            .with_shape(shape::next_shape())
+                            .finalize(),
             score:      0,
             gameover:   false,
         }
@@ -59,28 +51,16 @@ impl Game {
     }
 
     fn handle_key(&mut self, key: Event) {
-
-        let block = GridBuilder::new()
-            .with_color(grid::Color::Red)
-            .with_shape(self.shape)
-            .with_rotation(shape::rotate(self.rotation));
         
-        self.rotation = block.get_rotation();
-        self.block = block.finalize();
+        if let Some(shape) = self.block.shape {
+            
+            self.block = GridBuilder::new()
+                .with_color(self.block.color)
+                .with_shape(shape)
+                .with_rotation(shape::rotate(self.block.rotation))
+                .finalize();
 
-        self.print_block();
-    }
-
-    fn print_block(&self) {
-
-        for y in 0..self.block.len() {
-            for x in 0..self.block[y].len() {
-                match self.block[y][x] {
-                    grid::Color::Empty => print!("_"),
-                    _ => print!("X"),
-                }
-            }
-            println!();
+            self.block.print();
         }
     }
 }

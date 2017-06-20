@@ -7,7 +7,30 @@ use rand::Rng;
 const GRID_HEIGHT:  usize = 22;
 const GRID_WIDTH:   usize = 10;
 
-pub type Grid = [[Color; GRID_WIDTH]; GRID_HEIGHT];
+pub struct Grid {
+    pub shape:      Option<&'static Shape>,
+    pub offset:     Point,
+    pub rotation:   usize,
+    pub color:      Color,
+    cells:          GridArray,
+}
+
+impl Grid {
+    pub fn print(&self) {
+
+        for y in 0..self.cells.len() {
+            for x in 0..self.cells[y].len() {
+                match self.cells[y][x] {
+                    Color::Empty => print!("_"),
+                    _ => print!("X"),
+                }
+            }
+            println!();
+        }
+    }
+}
+
+pub type GridArray = [[Color; GRID_WIDTH]; GRID_HEIGHT];
 
 #[derive(Copy, Clone, Debug)]
 pub enum Color {
@@ -41,7 +64,7 @@ pub struct GridBuilder {
     offset:     Point,
     rotation:   usize,
     color:      Color,
-    grid:       Grid,
+    cells:      GridArray,
 }
 
 impl GridBuilder {
@@ -53,53 +76,43 @@ impl GridBuilder {
             offset:     Point { x: 3, y: 0 }, // centered at top
             rotation:   shape::ROTATE_A,
             color:      Color::Empty,
-            grid:       [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
+            cells:      [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
         }
     }
     
-    pub fn with_color(mut self, color: Color) -> GridBuilder {
+    pub fn with_color(&mut self, color: Color) -> &mut GridBuilder {
     
         self.color = color;
         self
     }
     
-    pub fn with_shape(mut self, shape: &'static Shape) -> GridBuilder {
+    pub fn with_shape(&mut self, shape: &'static Shape) -> &mut GridBuilder {
     
         self.shape = Some(shape);
         self
     }
 
-    pub fn get_shape(&self) -> &'static Shape {
-        
-        match self.shape {
-            Some(shape) => shape,
-            None => panic!("Can't get shape!"),
-        }
-    }
-
-    pub fn with_offset(mut self, offset: Point) -> GridBuilder {
+    pub fn with_offset(&mut self, offset: Point) -> &mut GridBuilder {
 
         self.offset = offset;
         self
     }
 
-    pub fn get_offset(&self) -> Point {
-        
-        self.offset
-    }
-
-    pub fn with_rotation(mut self, rotation: usize) -> GridBuilder {
+    pub fn with_rotation(&mut self, rotation: usize) -> &mut GridBuilder {
 
         self.rotation = rotation;
         self
     }
-
-    pub fn get_rotation(&self) -> usize {
-        
-        self.rotation
-    }
     
-    pub fn finalize (mut self) -> Grid {
+    pub fn finalize (&mut self) -> Grid {
+        
+        let mut grid = Grid {
+            shape:      self.shape,
+            offset:     self.offset,
+            rotation:   self.rotation,
+            color:      self.color,
+            cells:      self.cells,
+        };
         
         if let Some(shape) = self.shape {
             
@@ -110,12 +123,13 @@ impl GridBuilder {
 
                 let point = &shape[point_idx];
 
-                // todo: make this actually work. gets messed up if get_offset previously gave a bad offset
                 if point.x + self.offset.x >= GRID_WIDTH {
                     self.offset.x -= 1;
+                    grid.offset.x -= 1;
                 }
                 if point.y + self.offset.y >= GRID_HEIGHT {
                     self.offset.y -= 1;
+                    grid.offset.y -= 1;
                 }
             }
             
@@ -124,11 +138,11 @@ impl GridBuilder {
 
                 let point = &shape[point_idx];
                 
-                self.grid[point.x + self.offset.x][point.y + self.offset.y] = self.color;
+                grid.cells[point.x + self.offset.x][point.y + self.offset.y] = self.color;
             }
         }
         
-        self.grid
+        grid
     }
     
 }
