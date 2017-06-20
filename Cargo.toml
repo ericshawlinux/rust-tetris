@@ -1,5 +1,5 @@
 [package]
-name = "tetris"
+name = "game"
 version = "0.1.0"
 authors = ["Eric Shaw <ericshaw.linux@gmail.com>"]
 
