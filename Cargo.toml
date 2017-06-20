@@ -5,3 +5,4 @@ authors = ["Eric Shaw <ericshaw.linux@gmail.com>"]
 
 [dependencies]
 rand="0.3.0"
+sdl2="0.30.0"

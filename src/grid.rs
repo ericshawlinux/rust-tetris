@@ -69,6 +69,14 @@ impl GridBuilder {
         self
     }
 
+    pub fn get_shape(&self) -> &'static Shape {
+        
+        match self.shape {
+            Some(shape) => shape,
+            None => panic!("Can't get shape!"),
+        }
+    }
+
     pub fn with_offset(mut self, offset: Point) -> GridBuilder {
 
         self.offset = offset;
@@ -86,7 +94,7 @@ impl GridBuilder {
         self
     }
 
-    pub fn get_rotation(mut self) -> usize {
+    pub fn get_rotation(&self) -> usize {
         
         self.rotation
     }

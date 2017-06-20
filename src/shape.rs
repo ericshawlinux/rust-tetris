@@ -10,6 +10,15 @@ pub struct Point {
     pub y: usize,
 }
 
+pub fn rotate(cargo: usize) -> usize {
+    if cargo >= 3 || cargo < 0 {
+        0
+    }
+    else {
+        cargo + 1
+    }
+}
+
 pub const ROTATE_A: usize = 0;
 pub const ROTATE_B: usize = 1;
 pub const ROTATE_C: usize = 2;
@@ -20,7 +29,7 @@ pub fn next_shape() -> &'static Shape {
     
     match n {
         1 => &L_SHAPES,
-        _ => &O_SHAPES,
+        _ => &L_SHAPES,
     }
 }
 
