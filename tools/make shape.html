@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>tetromino code generator</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+            .tetromino-grid {
+                border: 1px solid black;
+            }
+            .row {
+                height: 5em;
+                clear: both;
+            }
+            .tetromino {
+                height: 5em;
+                width:  5em;
+                border: 1px solid black;
+                float: left;
+            }
+        </style>
+        <script>
+            $(document).ready(function (e) {
+                var separator = '';
+            
+                $('.tetromino').click(function(e) {
+                    var node = $(e.target);
+                    var x = node.data('x');
+                    var y = node.data('y');
+                    $('#results').append(separator + 'Point { x: ' + x + ', y: ' + y + ' }');
+                    separator = ', ';
+                });
+                
+                $('#next').click(function(e) {
+                    e.preventDefault();
+                    
+                    var shape = $('#results').html();
+                    $('#results').html('');
+                    $('#finalized').append('<p>[' + shape + '],</p>');
+                    separator = '';
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="tetromino-grid">
+            <div class="row">
+                <div class="tetromino" data-x="0" data-y="0"></div>
+                <div class="tetromino" data-x="1" data-y="0"></div>
+                <div class="tetromino" data-x="2" data-y="0"></div>
+                <div class="tetromino" data-x="3" data-y="0"></div>
+            </div>
+            <div class="row">
+                <div class="tetromino" data-x="0" data-y="1"></div>
+                <div class="tetromino" data-x="1" data-y="1"></div>
+                <div class="tetromino" data-x="2" data-y="1"></div>
+                <div class="tetromino" data-x="3" data-y="1"></div>
+            </div>
+            <div class="row">
+                <div class="tetromino" data-x="0" data-y="2"></div>
+                <div class="tetromino" data-x="1" data-y="2"></div>
+                <div class="tetromino" data-x="2" data-y="2"></div>
+                <div class="tetromino" data-x="3" data-y="2"></div>
+            </div>
+            <div class="row">
+                <div class="tetromino" data-x="0" data-y="3"></div>
+                <div class="tetromino" data-x="1" data-y="3"></div>
+                <div class="tetromino" data-x="2" data-y="3"></div>
+                <div class="tetromino" data-x="3" data-y="3"></div>
+            </div>
+        </div>
+        <br>
+        <a href="#" id="next">Finalize</a>
+        <span id="finalized">
+        </span>
+        <p id="results"></p>
+    </body>
+</html>
