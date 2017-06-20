@@ -138,7 +138,7 @@ impl GridBuilder {
 
                 let point = &shape[point_idx];
                 
-                grid.cells[point.x + self.offset.x][point.y + self.offset.y] = self.color;
+                grid.cells[point.y + self.offset.y][point.x + self.offset.x] = self.color;
             }
         }
         

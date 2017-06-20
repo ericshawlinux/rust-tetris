@@ -1,6 +1,7 @@
 use sdl2;
 use sdl2::video;
 use sdl2::event::Event;
+use sdl2::keyboard::Keycode;
 
 use grid::GridBuilder;
 use grid::Grid;
@@ -40,7 +41,7 @@ impl Game {
         'main: loop {
             for event in event_pump.poll_iter() {
                 match event {
-                    key @ Event::KeyDown {..} => self.handle_key(key),
+                    Event::KeyDown {timestamp, window_id, keycode, ..} => self.handle_key(keycode),
                     Event::Quit {..} => break 'main,
                     _ => {},
                 }
@@ -50,16 +51,27 @@ impl Game {
         println!("Quitting");
     }
 
-    fn handle_key(&mut self, key: Event) {
+    fn handle_key(&mut self, key: Option<Keycode>) {
         
-        if let Some(shape) = self.block.shape {
+        if let (Some(shape), Some(key)) = (self.block.shape, key) {
             
-            self.block = GridBuilder::new()
-                .with_color(self.block.color)
+            let mut block = GridBuilder::new();
+            
+            block.with_color(self.block.color)
                 .with_shape(shape)
-                .with_rotation(shape::rotate(self.block.rotation))
-                .finalize();
-
+                .with_rotation(self.block.rotation);
+            
+            if key == Keycode::S {
+                block.with_shape(shape::next_shape());
+            }
+            else if key == Keycode::C {
+                block.with_color(grid::next_color());
+            }
+            else if key == Keycode::Up {
+                block.with_rotation(shape::rotate(self.block.rotation));
+            }
+            
+            self.block = block.finalize();
             self.block.print();
         }
     }
