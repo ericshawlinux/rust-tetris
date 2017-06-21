@@ -34,6 +34,19 @@ impl Grid {
     
         &self.cells
     }
+
+    pub fn place(&mut self, grid: &GridArray) -> &mut Grid {
+        
+        println!("Placing");
+        for y in 0..self.cells.len() {
+            for x in 0..self.cells[y].len() {
+                if grid[y][x] != Color::Empty {
+                    self.cells[y][x] = grid[y][x];
+                }
+            }
+        }
+        self
+    }
 }
 
 pub type GridArray = [[Color; GRID_WIDTH]; GRID_HEIGHT];

@@ -29,13 +29,13 @@ pub fn next_shape() -> &'static Shape {
     let n = rand::thread_rng().gen_range(1, 8);
     
     match n {
-        1 => &L_SHAPES,
+        1 => &I_SHAPES,
         2 => &J_SHAPES,
-        3 => &S_SHAPES,
-        4 => &Z_SHAPES,
-        5 => &T_SHAPES,
-        6 => &I_SHAPES,
-        7 => &O_SHAPES,
+        3 => &L_SHAPES,
+        4 => &O_SHAPES,
+        5 => &S_SHAPES,
+        6 => &T_SHAPES,
+        7 => &Z_SHAPES,
         _ => panic!("no such shape"),
     }
 }

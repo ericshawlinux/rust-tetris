@@ -44,10 +44,9 @@ impl Game {
                 }
             }
 
-            let cells = self.block.get_cells();
-            
             ui.clear();
-            ui.draw_block(cells);
+            ui.draw_block(self.grid.get_cells());
+            ui.draw_block(self.block.get_cells());
             ui.render();
         }
 
@@ -91,8 +90,13 @@ impl Game {
             else if key == Keycode::Right {
                 block.move_right();
             }
-            
+
             self.block = block.finalize();
+            
+            if key == Keycode::Space {
+                self.grid.place(self.block.get_cells());
+                self.grid.print();
+            }
         }
     }
 }
