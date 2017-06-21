@@ -1,19 +1,12 @@
-use sdl2;
-use sdl2::rect::Rect;
-use sdl2::video::Window;
-use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use sdl2::render::*;
 
 use grid;
 use grid::Grid;
 use grid::GridBuilder;
 use color;
 use shape;
-
-const CELL:     u32 = 50;
-const SCORE:    u32 = 250;
+use graphics::UI;
 
 pub struct Game {
     grid:       Grid, // past blocks that have been set
@@ -38,56 +31,23 @@ impl Game {
     
     pub fn play(&mut self) {
         
-        let sdl_context = sdl2::init().unwrap();
-        let mut event_pump = sdl_context.event_pump().unwrap();
-        let video = sdl_context.video().unwrap();
-        
-        let window = video.window("New window", CELL * grid::GRID_WIDTH_U32 + SCORE, CELL * grid::GRID_HEIGHT_U32)
-            .position_centered()
-            .build().unwrap();
-
-        let mut canvas : Canvas<Window> = window.into_canvas()
-            .present_vsync()
-            .build().unwrap();
-
-        canvas.set_draw_color(Color::RGB(0, 0, 0));
-        canvas.clear();
-
-        canvas.set_draw_color(Color::RGB(0, 0, 150));
-        canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT_U32));
+        let mut ui = UI::new();
         
         'main: loop {
-            canvas.set_draw_color(Color::RGB(0, 0, 0));
-            canvas.clear();
-
-            canvas.set_draw_color(Color::RGB(0, 0, 150));
-            canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT_U32));
             
-            canvas.set_draw_color(Color::RGB(255, 50, 50));
-            
-            {
-                let cells = self.block.get_cells();
-                
-                for y in 0..cells.len() {
-                    for x in 0..cells[y].len() {
-                        if cells[y][x] != color::Color::Empty {
-                            let plot1 = CELL as i32 * x as i32;
-                            let plot2 = CELL as i32 * y as i32;
-                            canvas.fill_rect(Rect::new(plot1, plot2, CELL, CELL));
-                        }
-                    }
-                }
-            }
-            
-            canvas.present();
-            
-            for event in event_pump.poll_iter() {
+            for event in ui.event_pump.poll_iter() {
                 match event {
                     Event::KeyDown {keycode, ..} => self.handle_key(keycode),
                     Event::Quit {..} => break 'main,
                     _ => {},
                 }
             }
+
+            let cells = self.block.get_cells();
+            
+            ui.clear();
+            ui.draw_block(cells);
+            ui.render();
         }
 
         println!("Quitting");

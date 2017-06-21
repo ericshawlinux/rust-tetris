@@ -5,6 +5,7 @@ pub mod grid;
 pub mod shape;
 pub mod game;
 pub mod color;
+pub mod graphics;
 
 use game::Game;
 
