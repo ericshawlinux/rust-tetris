@@ -6,8 +6,8 @@ pub type Shape = [[Point; 4]; 4];
 
 #[derive(Copy, Clone)]
 pub struct Point {
-    pub x: usize,
-    pub y: usize,
+    pub x: i32,
+    pub y: i32,
 }
 
 pub fn rotate(current: usize) -> usize {
@@ -76,14 +76,14 @@ pub static T_SHAPES: Shape = [
     [Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }, Point { x: 1, y: 2 }],
     [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }],
     [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
-    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 2 }],
+    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }, Point { x: 1, y: 2 }],
 ];
 
 pub static I_SHAPES: Shape = [
-    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }, Point { x: 0, y: 3 }],
-    [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }],
-    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }, Point { x: 0, y: 3 }],
-    [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }],
+    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }, Point { x: 1, y: 3 }],
+    [Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }, Point { x: 3, y: 1 }],
+    [Point { x: 2, y: 0 }, Point { x: 2, y: 1 }, Point { x: 2, y: 2 }, Point { x: 2, y: 3 }],
+    [Point { x: 0, y: 2 }, Point { x: 1, y: 2 }, Point { x: 2, y: 2 }, Point { x: 3, y: 2 }],
 ];
 
 pub static O_SHAPES: Shape = [

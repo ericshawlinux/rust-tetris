@@ -7,8 +7,6 @@ use color::Color;
 
 pub const GRID_HEIGHT:      usize = 20;
 pub const GRID_WIDTH:       usize = 10;
-pub const GRID_HEIGHT_U32:  u32 = 20;
-pub const GRID_WIDTH_U32:   u32 = 10;
 
 pub struct Grid {
     pub shape:      Option<&'static Shape>,
@@ -54,7 +52,7 @@ impl GridBuilder {
     
         GridBuilder {
             shape:      None,
-            offset:     Point { x: 3, y: 0 }, // centered at top
+            offset:     Point { x: 4, y: -1 }, // centered at top
             rotation:   shape::ROTATE_A,
             color:      Color::Empty,
             cells:      [[Color::Empty; GRID_WIDTH]; GRID_HEIGHT],
@@ -81,25 +79,25 @@ impl GridBuilder {
     
     pub fn move_up(&mut self) -> &mut GridBuilder {
     
-        self.offset.y = cmp::max(self.offset.y as i32 - 1, 0) as usize;
+        self.offset.y -= 1;
         self
     }
     
     pub fn move_down(&mut self) -> &mut GridBuilder {
     
-        self.offset.y = cmp::min(self.offset.y + 1, GRID_HEIGHT - 1);
+        self.offset.y += 1;
         self
     }
     
     pub fn move_left(&mut self) -> &mut GridBuilder {
     
-        self.offset.x = cmp::max(self.offset.x as i32 - 1, 0) as usize;
+        self.offset.x -= 1;
         self
     }
     
     pub fn move_right(&mut self) -> &mut GridBuilder {
     
-        self.offset.x = cmp::min(self.offset.x + 1, GRID_WIDTH - 1);
+        self.offset.x += 1;
         self
     }
 
@@ -128,13 +126,21 @@ impl GridBuilder {
 
                 let point = &shape[point_idx];
 
-                if point.x + self.offset.x >= GRID_WIDTH {
+                if point.x + self.offset.x >= GRID_WIDTH as i32 {
                     self.offset.x -= 1;
                     grid.offset.x -= 1;
                 }
-                if point.y + self.offset.y >= GRID_HEIGHT {
+                if point.x + self.offset.x < 0 {
+                    self.offset.x += 1;
+                    grid.offset.x += 1;
+                }
+                if point.y + self.offset.y >= GRID_HEIGHT as i32 {
                     self.offset.y -= 1;
                     grid.offset.y -= 1;
+                }
+                if point.y + self.offset.y < 0 {
+                    self.offset.y += 1;
+                    grid.offset.y += 1;
                 }
             }
             
@@ -142,8 +148,10 @@ impl GridBuilder {
             for point_idx in 0..shape.len() {
 
                 let point = &shape[point_idx];
-                
-                grid.cells[point.y + self.offset.y][point.x + self.offset.x] = self.color;
+                let x = (point.x + self.offset.x) as usize;
+                let y = (point.y + self.offset.y) as usize;
+
+                grid.cells[y][x] = self.color;
             }
         }
         

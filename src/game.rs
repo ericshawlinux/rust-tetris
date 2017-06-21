@@ -6,6 +6,7 @@ use grid::Grid;
 use grid::GridBuilder;
 use color;
 use shape;
+use shape::Point;
 use graphics::UI;
 
 pub struct Game {
@@ -73,6 +74,11 @@ impl Game {
             else if key == Keycode::R {
                 block.with_rotation(shape::rotate(self.block.rotation));
             }
+            else if key == Keycode::N {
+                block.with_shape(shape::next_shape());
+                block.with_offset(Point { x: 4, y: -1 });
+                block.with_color(color::next_color());
+            }
             else if key == Keycode::Up {
                 block.move_up();
             }
@@ -87,7 +93,6 @@ impl Game {
             }
             
             self.block = block.finalize();
-            self.block.print();
         }
     }
 }

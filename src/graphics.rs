@@ -22,7 +22,7 @@ impl UI {
         let mut event_pump = sdl_context.event_pump().unwrap();
         let video = sdl_context.video().unwrap();
         
-        let window = video.window("New window", CELL * grid::GRID_WIDTH_U32 + SCORE, CELL * grid::GRID_HEIGHT_U32)
+        let window = video.window("New window", CELL * grid::GRID_WIDTH as u32 + SCORE, CELL * grid::GRID_HEIGHT as u32)
             .position_centered()
             .build().unwrap();
 
@@ -43,7 +43,7 @@ impl UI {
         self.canvas.clear();
 
         self.canvas.set_draw_color(Color::RGB(0, 0, 150));
-        self.canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT_U32));
+        self.canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT as u32));
 
         self
     }
