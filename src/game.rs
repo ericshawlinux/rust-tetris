@@ -53,15 +53,15 @@ impl Game {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
 
-        canvas.set_draw_color(Color::RGB(255, 210, 0));
-        canvas.fill_rect(Rect::new(0, 0, CELL * grid::GRID_WIDTH_U32, CELL * grid::GRID_HEIGHT_U32));
+        canvas.set_draw_color(Color::RGB(0, 0, 150));
+        canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT_U32));
         
         'main: loop {
             canvas.set_draw_color(Color::RGB(0, 0, 0));
             canvas.clear();
-        
-            canvas.set_draw_color(Color::RGB(255, 210, 0));
-            canvas.fill_rect(Rect::new(0, 0, CELL * grid::GRID_WIDTH_U32, CELL * grid::GRID_HEIGHT_U32));
+
+            canvas.set_draw_color(Color::RGB(0, 0, 150));
+            canvas.fill_rect(Rect::new(CELL as i32 * grid::GRID_WIDTH as i32, 0, SCORE, CELL * grid::GRID_HEIGHT_U32));
             
             canvas.set_draw_color(Color::RGB(255, 50, 50));
             
@@ -73,9 +73,7 @@ impl Game {
                         if cells[y][x] != color::Color::Empty {
                             let plot1 = CELL as i32 * x as i32;
                             let plot2 = CELL as i32 * y as i32;
-                            let plot3 = (CELL as i32 * x as i32) + CELL as i32;
-                            let plot4 = (CELL as i32 * y as i32) + CELL as i32;
-                            canvas.fill_rect(Rect::new(plot1, plot2, plot3 as u32, plot4 as u32));
+                            canvas.fill_rect(Rect::new(plot1, plot2, CELL, CELL));
                         }
                     }
                 }

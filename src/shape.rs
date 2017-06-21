@@ -44,39 +44,39 @@ pub static L_SHAPES: Shape = [
     // no rotation
     [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }, Point { x: 1, y: 2 }],
     // 1 rotation
-    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }],
+    [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 0, y: 1 }],
     // 2 rotations
     [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }],
     // 3 rotations
-    [Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }, Point { x: 2, y: 0 }],
+    [Point { x: 2, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
 ];
 
 pub static J_SHAPES: Shape = [
-    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }, Point { x: 0, y: 2 }],
-    [Point { x: 2, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }, Point { x: 0, y: 0 }],
-    [Point { x: 0, y: 2 }, Point { x: 0, y: 1 }, Point { x: 0, y: 0 }, Point { x: 1, y: 0 }],
+    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 0, y: 2 }, Point { x: 1, y: 2 }],
+    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
+    [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }],
     [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 2, y: 1 }],
 ];
 
 pub static S_SHAPES: Shape = [
-    [Point { x: 2, y: 0 }, Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }],
+    [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }],
     [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }],
-    [Point { x: 2, y: 0 }, Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }],
+    [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }],
     [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }],
 ];
 
 pub static Z_SHAPES: Shape = [
     [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
-    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }],
+    [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 2 }],
     [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
-    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }, Point { x: 0, y: 2 }],
+    [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 2 }],
 ];
 
 pub static T_SHAPES: Shape = [
-    [Point { x: 0, y: 0 }, Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 1, y: 1 }],
-    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }, Point { x: 0, y: 1 }],
-    [Point { x: 2, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 1 }, Point { x: 1, y: 0 }],
-    [Point { x: 1, y: 0 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }, Point { x: 2, y: 1 }],
+    [Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }, Point { x: 1, y: 2 }],
+    [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 1, y: 2 }],
+    [Point { x: 1, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 2, y: 1 }],
+    [Point { x: 0, y: 0 }, Point { x: 0, y: 1 }, Point { x: 1, y: 1 }, Point { x: 0, y: 2 }],
 ];
 
 pub static I_SHAPES: Shape = [
