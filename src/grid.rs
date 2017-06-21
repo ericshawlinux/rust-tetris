@@ -1,11 +1,14 @@
+use std::cmp;
+
 use shape;
 use shape::Point;
 use shape::Shape;
-use rand;
-use rand::Rng;
+use color::Color;
 
-const GRID_HEIGHT:  usize = 22;
-const GRID_WIDTH:   usize = 10;
+pub const GRID_HEIGHT:      usize = 20;
+pub const GRID_WIDTH:       usize = 10;
+pub const GRID_HEIGHT_U32:  u32 = 20;
+pub const GRID_WIDTH_U32:   u32 = 10;
 
 pub struct Grid {
     pub shape:      Option<&'static Shape>,
@@ -28,36 +31,14 @@ impl Grid {
             println!();
         }
     }
-}
-
-pub type GridArray = [[Color; GRID_WIDTH]; GRID_HEIGHT];
-
-#[derive(Copy, Clone, Debug)]
-pub enum Color {
-    Red,
-    Orange,
-    Yellow,
-    Green,
-    Blue,
-    Indigo,
-    Violet,
-    Empty,
-}
-
-pub fn next_color() -> Color {
-    let n = rand::thread_rng().gen_range(1, 8);
-
-    match n {
-        1 => Color::Red,
-        2 => Color::Orange,
-        3 => Color::Yellow,
-        4 => Color::Green,
-        5 => Color::Blue,
-        6 => Color::Indigo,
-        _ => Color::Violet,
+    
+    pub fn get_cells(&self) -> &GridArray {
+    
+        &self.cells
     }
 }
 
+pub type GridArray = [[Color; GRID_WIDTH]; GRID_HEIGHT];
 
 pub struct GridBuilder {
     shape:      Option<&'static Shape>,
@@ -93,8 +74,32 @@ impl GridBuilder {
     }
 
     pub fn with_offset(&mut self, offset: Point) -> &mut GridBuilder {
-
+        
         self.offset = offset;
+        self
+    }
+    
+    pub fn move_up(&mut self) -> &mut GridBuilder {
+    
+        self.offset.y = cmp::max(self.offset.y as i32 - 1, 0) as usize;
+        self
+    }
+    
+    pub fn move_down(&mut self) -> &mut GridBuilder {
+    
+        self.offset.y = cmp::min(self.offset.y + 1, GRID_HEIGHT - 1);
+        self
+    }
+    
+    pub fn move_left(&mut self) -> &mut GridBuilder {
+    
+        self.offset.x = cmp::max(self.offset.x as i32 - 1, 0) as usize;
+        self
+    }
+    
+    pub fn move_right(&mut self) -> &mut GridBuilder {
+    
+        self.offset.x = cmp::min(self.offset.x + 1, GRID_WIDTH - 1);
         self
     }
 
@@ -117,8 +122,8 @@ impl GridBuilder {
         if let Some(shape) = self.shape {
             
             let shape = shape[self.rotation];
-
-            // check boundaries are not crossed (4 points)
+            
+            // check array boundaries are not crossed (4 points)
             for point_idx in 0..shape.len() {
 
                 let point = &shape[point_idx];
@@ -144,6 +149,4 @@ impl GridBuilder {
         
         grid
     }
-    
 }
-

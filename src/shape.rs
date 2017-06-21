@@ -10,19 +10,20 @@ pub struct Point {
     pub y: usize,
 }
 
-pub fn rotate(cargo: usize) -> usize {
-    if cargo >= 3 || cargo < 0 {
-        0
+pub fn rotate(current: usize) -> usize {
+    if current >= MAX_ROTATE {
+        ROTATE_A
     }
     else {
-        cargo + 1
+        current + 1
     }
 }
 
-pub const ROTATE_A: usize = 0;
-pub const ROTATE_B: usize = 1;
-pub const ROTATE_C: usize = 2;
-pub const ROTATE_D: usize = 3;
+pub const ROTATE_A:     usize = 0;
+pub const ROTATE_B:     usize = 1;
+pub const ROTATE_C:     usize = 2;
+pub const ROTATE_D:     usize = 3;
+pub const MAX_ROTATE:   usize = 3;
 
 pub fn next_shape() -> &'static Shape {
     let n = rand::thread_rng().gen_range(1, 8);

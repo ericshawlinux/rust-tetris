@@ -4,6 +4,8 @@ extern crate sdl2;
 pub mod grid;
 pub mod shape;
 pub mod game;
+pub mod color;
+
 use game::Game;
 
 fn main() {
