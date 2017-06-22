@@ -22,7 +22,6 @@ impl Game {
         Game {
             grid:       GridBuilder::new().finalize(),
             block:      GridBuilder::new()
-                            .with_color(color::next_color())
                             .with_shape(shape::next_shape())
                             .finalize(),
             score:      0,
@@ -59,16 +58,12 @@ impl Game {
             
             let mut block = GridBuilder::new();
             
-            block.with_color(self.block.color)
-                .with_shape(shape)
+            block.with_shape((self.block.color, shape))
                 .with_offset(self.block.offset)
                 .with_rotation(self.block.rotation);            
             
             if key == Keycode::S {
                 block.with_shape(shape::next_shape());
-            }
-            else if key == Keycode::C {
-                block.with_color(color::next_color());
             }
             else if key == Keycode::R {
                 block.with_rotation(shape::rotate(self.block.rotation));
@@ -76,7 +71,6 @@ impl Game {
             else if key == Keycode::N {
                 block.with_shape(shape::next_shape());
                 block.with_offset(Point { x: 4, y: -1 });
-                block.with_color(color::next_color());
             }
             else if key == Keycode::Up {
                 block.move_up();

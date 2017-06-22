@@ -1,6 +1,8 @@
 use rand;
 use rand::Rng;
 
+use color::Color;
+
 // shape plots, including rotations
 pub type Shape = [[Point; 4]; 4];
 
@@ -25,17 +27,17 @@ pub const ROTATE_C:     usize = 2;
 pub const ROTATE_D:     usize = 3;
 pub const MAX_ROTATE:   usize = 3;
 
-pub fn next_shape() -> &'static Shape {
+pub fn next_shape() -> (Color, &'static Shape) {
     let n = rand::thread_rng().gen_range(1, 8);
-    
+
     match n {
-        1 => &I_SHAPES,
-        2 => &J_SHAPES,
-        3 => &L_SHAPES,
-        4 => &O_SHAPES,
-        5 => &S_SHAPES,
-        6 => &T_SHAPES,
-        7 => &Z_SHAPES,
+        1 => (Color::Cyan, &I_SHAPES),
+        2 => (Color::Blue, &J_SHAPES),
+        3 => (Color::Orange, &L_SHAPES),
+        4 => (Color::Yellow, &O_SHAPES),
+        5 => (Color::Green, &S_SHAPES),
+        6 => (Color::Purple, &T_SHAPES),
+        7 => (Color::Red, &Z_SHAPES),
         _ => panic!("no such shape"),
     }
 }

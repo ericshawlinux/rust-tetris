@@ -28,18 +28,3 @@ impl Color {
         }
     }
 }
-
-pub fn next_color() -> Color {
-    let n = rand::thread_rng().gen_range(1, 8);
-
-    match n {
-        1 => Color::Cyan,
-        2 => Color::Blue,
-        3 => Color::Orange,
-        4 => Color::Yellow,
-        5 => Color::Green,
-        6 => Color::Purple,
-        7 => Color::Red,
-        _ => panic!("no such non-empty color"),
-    }
-}

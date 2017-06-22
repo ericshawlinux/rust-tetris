@@ -50,7 +50,6 @@ impl UI {
     }
 
     pub fn draw_block(&mut self, cells: &grid::GridArray) -> &mut UI {
-        
         for y in 0..cells.len() {
             for x in 0..cells[y].len() {
                 if cells[y][x] != color::Color::Empty {

@@ -72,14 +72,11 @@ impl GridBuilder {
         }
     }
     
-    pub fn with_color(&mut self, color: Color) -> &mut GridBuilder {
-    
+    pub fn with_shape(&mut self, shape: (Color, &'static Shape)) -> &mut GridBuilder {
+        
+        let (color, shape) = (shape.0, shape.1);
+
         self.color = color;
-        self
-    }
-    
-    pub fn with_shape(&mut self, shape: &'static Shape) -> &mut GridBuilder {
-    
         self.shape = Some(shape);
         self
     }
