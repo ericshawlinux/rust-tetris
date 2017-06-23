@@ -19,14 +19,14 @@ impl UI {
 
     pub fn new() -> UI {
         let sdl_context = sdl2::init().unwrap();
-        let mut event_pump = sdl_context.event_pump().unwrap();
+        let event_pump = sdl_context.event_pump().unwrap();
         let video = sdl_context.video().unwrap();
         
         let window = video.window("New window", CELL * grid::GRID_WIDTH as u32 + SCORE + CBORDER, CELL * grid::GRID_HEIGHT as u32 + CBORDER)
             .position_centered()
             .build().unwrap();
 
-        let mut canvas : sdl2::render::Canvas<sdl2::video::Window> = window.into_canvas()
+        let canvas : sdl2::render::Canvas<sdl2::video::Window> = window.into_canvas()
             .present_vsync()
             .build().unwrap();
         

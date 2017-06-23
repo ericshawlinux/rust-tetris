@@ -1,6 +1,4 @@
 use sdl2::event::Event;
-use sdl2::event::EventType;
-use sdl2::keyboard;
 use sdl2::keyboard::Keycode;
 use std::time;
 
@@ -43,14 +41,32 @@ impl Game {
                     
                     if let Some(keycode) = keycode {
                         
-                        if let Some(direction) = Direction::from_keycode(keycode) {
-                            self.grid.move_block(&mut self.block, direction);
+                        if keycode == Keycode::Up {
+                            self.grid.rotate_block(&mut self.block);
+                        }
+                        else if keycode == Keycode::Down {
+                            self.timer = time::Instant::now();
+                            self.grid.move_block(&mut self.block, Direction::Down);
+                        }
+                        else if keycode == Keycode::Left {
+                            self.grid.move_block(&mut self.block, Direction::Left);
+                        }
+                        else if keycode == Keycode::Right {
+                            self.grid.move_block(&mut self.block, Direction::Right);
                         }
                     }
                 }
                 else if let Event::Quit {..} = event {
                     break 'main;
                 }
+            }
+
+            if self.timer.elapsed() > time::Duration::new(0, 900000000) {
+                if !self.grid.move_block(&mut self.block, Direction::Down) {
+                    self.block = Block::new();
+                    self.grid.place(&self.block);
+                }
+                self.timer = time::Instant::now();
             }
 
             ui.clear();

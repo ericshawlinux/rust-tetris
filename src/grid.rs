@@ -1,6 +1,4 @@
-use std::cmp;
 use sdl2::pixels::Color;
-use sdl2::keyboard::Keycode;
 
 use block::Block;
 use block::Point;
@@ -52,13 +50,53 @@ impl Grid {
                     Direction::Down     => (x, y + 1),
                 };
 
-                Point {x: x, y: y}
+                Point { x: x, y: y }
             };
         }
 
         // validate boundaries and collisions
+        if !self.move_is_valid(block, &new_plot) {
+            return false;
+        }
+
+        // erase old block
+        for point in &block.plot {
+            self.cells[point.y as usize][point.x as usize] = Color::RGB(0, 0, 0);
+        }
+
+        // update block plot, grid, and offset
+        block.plot = new_plot;
+        self.place(block);
+
+        block.increment_offset(direction);
+
+        true
+    }
+
+    pub fn rotate_block(&mut self, block: &mut Block) {
+        
+        let new_plot = block.get_rotation_plot();
+
+        // validate boundaries and collisions
+        if !self.move_is_valid(block, &new_plot) {
+            return;
+        }
+        block.increment_rotation();
+
+        // erase old block
+        for point in &block.plot {
+            self.cells[point.y as usize][point.x as usize] = Color::RGB(0, 0, 0);
+        }
+
+        // update block plot
+        block.plot = new_plot;
+        self.place(block);
+    }
+
+    pub fn move_is_valid(&self, block: &Block, new_plot: &Plot) -> bool {
+
         'validation:
-        for point in &new_plot {
+        for point in new_plot {
 
             // collision with self is ok, skip
             for current_point in &block.plot {
@@ -68,51 +106,27 @@ impl Grid {
             }
             // check grid boundaries
             if point.x < 0 || point.y < 0 {
-                println!("Too low");
+                println!("Out of bounds");
                 return false;
             }
             if point.x >= GRID_WIDTH as i32 || point.y >= GRID_HEIGHT as i32 {
-                println!("Too high");
+                println!("Out of bounds");
                 return false;
             }
             // check for collision
             if self.cells[point.y as usize][point.x as usize] != Color::RGB(0, 0, 0) {
-                println!("there's another block here");
+                println!("Collision");
                 return false;
             }
         }
-
-        // erase old block
-        for point in &block.plot {
-            self.cells[point.y as usize][point.x as usize] = Color::RGB(0, 0, 0);
-        }
-
-        // update block plot
-        block.plot = new_plot;
-
-        // update grid
-        for point in &block.plot {
-            self.cells[point.y as usize][point.x as usize] = block.color;
-        }
-
+        
         true
     }
 }
 
+#[derive(PartialEq)]
 pub enum Direction {
     Down,
     Left,
     Right,
-}
-
-impl Direction {
-    pub fn from_keycode(keycode: Keycode) -> Option<Direction> {
-        
-        match keycode {
-            Keycode::Left => Some(Direction::Left),
-            Keycode::Right => Some(Direction::Right),
-            Keycode::Down => Some(Direction::Down),
-            _ => None
-        }
-    }
 }
