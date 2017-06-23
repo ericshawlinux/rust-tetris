@@ -3,7 +3,6 @@ use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 
 use grid;
-use color;
 
 const CELL:     u32 = 50;
 const CBORDER:  u32 = 4;
@@ -52,7 +51,7 @@ impl UI {
     pub fn draw_block(&mut self, cells: &grid::GridArray) -> &mut UI {
         for y in 0..cells.len() {
             for x in 0..cells[y].len() {
-                if cells[y][x] != color::Color::Empty {
+                if cells[y][x] != Color::RGB(0, 0, 0) {
                     self.draw_block_segment(x, y, cells[y][x]);
                 }
             }
@@ -61,12 +60,12 @@ impl UI {
         self
     }
 
-    fn draw_block_segment(&mut self, x: usize, y: usize, color: color::Color) -> &mut UI {
+    fn draw_block_segment(&mut self, x: usize, y: usize, color: Color) -> &mut UI {
         let plot1 = CELL as i32 * x as i32 + CBORDER as i32;
         let plot2 = CELL as i32 * y as i32 + CBORDER as i32;
         self.canvas.set_draw_color(Color::RGB(0, 0, 0));
         self.canvas.fill_rect(Rect::new(plot1, plot2, CELL, CELL));
-        self.canvas.set_draw_color(color.to_rgb());
+        self.canvas.set_draw_color(color);
         self.canvas.fill_rect(Rect::new(plot1, plot2, CELL - CBORDER, CELL - CBORDER));
         self
     }

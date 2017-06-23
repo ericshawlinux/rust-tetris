@@ -1,11 +1,10 @@
 extern crate rand;
 extern crate sdl2;
 
-pub mod grid;
-pub mod shape;
+pub mod block;
 pub mod game;
-pub mod color;
 pub mod graphics;
+pub mod grid;
 
 use game::Game;
 
