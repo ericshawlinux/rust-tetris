@@ -70,27 +70,61 @@ impl Grid {
 
     pub fn rotate_block(&mut self, block: &mut Block) {
 
-        // translate the plot so that the center point is at origin
+        let mut rotated_plot: Plot = [Point { x: 0, y: 0 }; 4];
 
-        let mut centered_plot: Plot = [Point { x: 0, y: 0 }; 4];
-        
         for p in 0..block.plot.len() {
-            centered_plot[p] = block.plot[p] - block.center;
+            // translate the point to origin
+            let cpoint = block.plot[p] - block.center;
+            // do a 90 degree rotation and translate it back
+            rotated_plot[p] = Point { x: -cpoint.y, y: cpoint.x } + block.center;
         }
 
-        // rotate the plot and return to former position
+        let (left, right, down, up) = (
+            Point { x: -1, y: 0 },
+            Point { x: 1, y: 0 },
+            Point { x: 0, y: 1 },
+            Point { x: 0, y: -1 },
+        );
 
-        let mut rotated_plot: Plot = centered_plot;
-
-        for p in 0..centered_plot.len() {
-            let (x, y) = (centered_plot[p].x, centered_plot[p].y);
-            rotated_plot[p] = Point { x: -y, y: x } + block.center;
-        }
-
+        // no translation
         if self.validate_plot(block, &rotated_plot) {
-            self.finalize_plot(block, rotated_plot, None)
+            self.finalize_plot(block, rotated_plot, None);
+            return;
         }
 
+        // left once
+        let left_plot = Grid::translate_plot(&rotated_plot, left);
+        
+        if self.validate_plot(block, &left_plot) {
+            self.finalize_plot(block, left_plot, Some(Direction::Left));
+            return;
+        }
+
+        // moved left twice
+        let left_plot = Grid::translate_plot(&left_plot, left);
+
+        if self.validate_plot(block, &left_plot) {
+            // this will make the block.center incorrect. todo: stop using Direction enum.
+            // instead, just use a point that describes the change
+            self.finalize_plot(block, left_plot, Some(Direction::Left));
+            return;
+        }
+
+        // moved right once
+        let right_plot = Grid::translate_plot(&rotated_plot, right);
+
+        if self.validate_plot(block, &right_plot) {
+            self.finalize_plot(block, right_plot, Some(Direction::Right));
+            return;
+        }
+
+        // moved right twice
+        let right_plot = Grid::translate_plot(&right_plot, right);
+
+        if self.validate_plot(block, &right_plot) {
+            self.finalize_plot(block, right_plot, Some(Direction::Right));
+            return;
+        }
     }
 
     fn validate_plot(&self, block: &mut Block, new_plot: &Plot) -> bool {
@@ -141,6 +175,18 @@ impl Grid {
         for point in &block.plot {
             self.cells[point.y as usize][point.x as usize] = block.color;
         }
+    }
+
+    // used when rotating to try and shift the block a little if necessary
+    fn translate_plot(plot: &Plot, change: Point) -> Plot {
+
+        let mut result: Plot = *plot;
+
+        for p in 0..plot.len() {
+            result[p] = plot[p] + change;
+        }
+
+        result
     }
 }
 
