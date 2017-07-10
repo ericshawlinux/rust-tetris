@@ -5,6 +5,7 @@ pub mod block;
 pub mod game;
 pub mod graphics;
 pub mod grid;
+pub mod point;
 
 use game::Game;
 

@@ -4,7 +4,7 @@ use std::time;
 
 use block::Block;
 use grid::Grid;
-use grid::Direction;
+use point::direction;
 use graphics::UI;
 
 pub struct Game {
@@ -46,13 +46,13 @@ impl Game {
                         }
                         else if keycode == Keycode::Down {
                             self.timer = time::Instant::now();
-                            self.grid.move_block(&mut self.block, Direction::Down);
+                            self.grid.move_block(&mut self.block, direction::DOWN);
                         }
                         else if keycode == Keycode::Left {
-                            self.grid.move_block(&mut self.block, Direction::Left);
+                            self.grid.move_block(&mut self.block, direction::LEFT);
                         }
                         else if keycode == Keycode::Right {
-                            self.grid.move_block(&mut self.block, Direction::Right);
+                            self.grid.move_block(&mut self.block, direction::RIGHT);
                         }
                     }
                 }
@@ -62,7 +62,7 @@ impl Game {
             }
 
             if self.timer.elapsed() > time::Duration::new(0, 900000000) {
-                if !self.grid.move_block(&mut self.block, Direction::Down) {
+                if !self.grid.move_block(&mut self.block, direction::DOWN) {
                     self.block = Block::new();
                     self.grid.place(&self.block);
                 }
