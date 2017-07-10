@@ -1,6 +1,5 @@
 use std::f64;
 use sdl2::pixels::Color;
-use sdl2::keyboard::Keycode;
 
 use block::Block;
 use point::Point;
