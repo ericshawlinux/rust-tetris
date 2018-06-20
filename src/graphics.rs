@@ -1,3 +1,14 @@
+/* graphics.rs
+ *  
+ * Created by Eric Shaw Jr. on 2017-06-21
+ * Copyright (c) 2017, 2018 Eric Shaw Jr.
+ * 
+ * This file is part of rustlang-game. It is subject to the license terms
+ * in the LICENSE file found in the top-level directory of this distribution.
+ * No part of rustlang-game, including this file, may be copied, modified, propagated,
+ * or distributed except according to the terms contained in the LICENSE file.
+ */
+
 use sdl2;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;

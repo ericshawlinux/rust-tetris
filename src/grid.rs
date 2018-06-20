@@ -1,3 +1,14 @@
+/* grid.rs
+ *  
+ * Created by Eric Shaw Jr. on 2017-06-18
+ * Copyright (c) 2017, 2018 Eric Shaw Jr.
+ * 
+ * This file is part of rustlang-game. It is subject to the license terms
+ * in the LICENSE file found in the top-level directory of this distribution.
+ * No part of rustlang-game, including this file, may be copied, modified, propagated,
+ * or distributed except according to the terms contained in the LICENSE file.
+ */
+
 use std::f64;
 use sdl2::pixels::Color;
 
