@@ -96,4 +96,14 @@ impl Grid {
             }
         }
     }
+
+    pub fn clear_bars(&self) -> i32 {
+
+        'rows: for row in &self.cells {
+            for color in row {
+            }
+        }
+
+        return 0;
+    }
 }

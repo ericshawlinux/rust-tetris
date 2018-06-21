@@ -10,6 +10,7 @@
  */
 
 use sdl2::event::Event;
+use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use std::time;
 
@@ -46,7 +47,7 @@ impl Game {
 
         'main: loop {
             
-            for event in ui.event_pump.poll_iter() {
+            for event in ui.sdl_context.event_pump().unwrap().poll_iter() {
 
                 if let Event::KeyDown {keycode, ..} = event {
                     
@@ -67,13 +68,21 @@ impl Game {
                         }
                     }
                 }
+                else if let Event::Window {win_event, ..} = event {
+                    if let WindowEvent::Resized(height, width) = win_event {
+                        ui.resize(height, width);
+                    }
+                }
                 else if let Event::Quit {..} = event {
                     break 'main;
                 }
             }
 
-            if self.timer.elapsed() > time::Duration::new(0, 900000000) {
+            if self.timer.elapsed() > time::Duration::from_millis(900) {
                 if !self.grid.move_block(&mut self.block, direction::DOWN) {
+                    let points = self.grid.clear_bars();
+                    self.score += points;
+
                     self.block = Block::new();
                     self.grid.place(&self.block);
                 }

@@ -15,25 +15,24 @@ use sdl2::rect::Rect;
 
 use grid;
 
-const CELL:     u32 = 50;
-const CBORDER:  u32 = 4;
-const SCORE:    u32 = 250;
+const CELL:     u32 = 25;
+const CBORDER:  u32 = 2;
+const SCORE:    u32 = 150;
 
 pub struct UI {
-    sdl_context:    sdl2::Sdl,
-    pub event_pump: sdl2::EventPump,
-    video:          sdl2::VideoSubsystem,
-    canvas:         sdl2::render::WindowCanvas,
+    pub sdl_context:    sdl2::Sdl,
+    video:              sdl2::VideoSubsystem,
+    canvas:             sdl2::render::WindowCanvas,
 }
 
 impl UI {
 
     pub fn new() -> UI {
         let sdl_context = sdl2::init().unwrap();
-        let event_pump = sdl_context.event_pump().unwrap();
         let video = sdl_context.video().unwrap();
         
-        let window = video.window("New window", CELL * grid::GRID_WIDTH as u32 + SCORE + CBORDER, CELL * grid::GRID_HEIGHT as u32 + CBORDER)
+        let window = video.window("Game", CELL * grid::GRID_WIDTH as u32 + SCORE + CBORDER, CELL * grid::GRID_HEIGHT as u32 + CBORDER)
+            .resizable()
             .position_centered()
             .build().unwrap();
 
@@ -43,7 +42,6 @@ impl UI {
         
         UI {
             sdl_context: sdl_context,
-            event_pump: event_pump,
             video: video,
             canvas: canvas,
         }
@@ -83,6 +81,11 @@ impl UI {
 
     pub fn render(&mut self) -> &mut UI {
         self.canvas.present();
+        self
+    }
+
+    pub fn resize(&mut self, height: i32, width: i32) -> &mut UI {
+        
         self
     }
 }
